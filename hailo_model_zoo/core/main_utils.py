@@ -121,8 +121,9 @@ def parse_model(runner, network_info, *, ckpt_path=None, results_dir=Path("."), 
     # we don't try to download the file in case the ckpt_path is overridden by the user
     if ckpt_path is None:
         ckpt_path = download_model(network_info, logger)
-
-    model_name = translate_model(runner, network_info, ckpt_path, tensor_shapes=start_node_shape)
+    tensor_shapes = dict()
+    tensor_shapes[str(network_info.parser.start_node_name)] = network_info.parser.start_node_shape
+    model_name = translate_model(runner, network_info, ckpt_path, tensor_shapes=tensor_shapes)
 
     # hn editing
     if network_info.parser.normalization_params.fold_normalization:

@@ -1,0 +1,65 @@
+base:
+- base/coco.yaml
+- base/ssd.yaml
+quantization:
+  calib_set_size: 64
+preprocessing:
+  input_shape:
+  - 512
+  - 512
+  - 3
+postprocessing:
+  device_pre_post_layers:
+    argmax: false
+    softmax: false
+    bilinear: false
+    nms: true
+  postprocess_config_json: models_files/Detection/my_ssd_mobilenet_v1/my_ssd_mobilenet_v1.json
+  meta_arch: ssd
+  anchors:
+    predefined: true
+network:
+  network_name: my_ssd_mobilenet_v1
+allocation:
+  required_fps: 1196
+paths:
+  alls_script: ssd_mobilenet_v1.alls
+  network_path:
+  - models_files/Detection/my_ssd_mobilenet_v1/my_ssd_mobilenet_v1.ckpt.meta
+  - models_files/Detection/my_ssd_mobilenet_v1/my_ssd_mobilenet_v1.ckpt.index
+  - models_files/Detection/my_ssd_mobilenet_v1/my_ssd_mobilenet_v1.ckpt.data-00000-of-00001
+  url: https://hailo-model-zoo.s3.eu-west-2.amazonaws.com/ObjectDetection/Detection-COCO/ssd/ssd_mobilenet_v1/pretrained/2021-07-11/ssd_mobilenet_v1.zip
+parser:
+  nodes:
+  - FeatureExtractor/MobilenetV1/MobilenetV1/Conv2d_0/Conv2D
+  - - BoxPredictor_0/BoxEncodingPredictor/BiasAdd
+    - BoxPredictor_0/ClassPredictor/BiasAdd
+    - BoxPredictor_1/BoxEncodingPredictor/BiasAdd
+    - BoxPredictor_1/ClassPredictor/BiasAdd
+    - BoxPredictor_2/BoxEncodingPredictor/BiasAdd
+    - BoxPredictor_2/ClassPredictor/BiasAdd
+    - BoxPredictor_3/BoxEncodingPredictor/BiasAdd
+    - BoxPredictor_3/ClassPredictor/BiasAdd
+    - BoxPredictor_4/BoxEncodingPredictor/BiasAdd
+    - BoxPredictor_4/ClassPredictor/BiasAdd
+    - BoxPredictor_5/BoxEncodingPredictor/BiasAdd
+    - BoxPredictor_5/ClassPredictor/BiasAdd
+  normalization_params:
+    normalize_in_net: true
+    mean_list:
+    - 114.35260035
+    - 112.1946399
+    - 117.7937412
+    std_list:
+    - 39.2592798
+    - 37.5140598
+    - 39.02373885
+  start_node_shape:
+  - 1
+  - 512
+  - 512
+  - 3
+  start_node_name: Preprocessor/sub:0
+evaluation:
+  labels_offset: 1
+  classes: 6
