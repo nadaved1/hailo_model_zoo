@@ -61,5 +61,5 @@ parser:
   - 3
   start_node_name: Preprocessor/sub:0
 evaluation:
-  labels_offset: 1
+  labels_offset: 0
   classes: 6
