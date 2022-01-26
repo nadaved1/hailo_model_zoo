@@ -9,6 +9,8 @@ preprocessing:
   - 512
   - 3
 postprocessing:
+  nms_iou_thresh: 0.6
+  score_threshold: 0.3
   device_pre_post_layers:
     argmax: false
     softmax: false
